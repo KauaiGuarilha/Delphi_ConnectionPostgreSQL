@@ -15,13 +15,13 @@ type
     Button1: TButton;
     DBGPessoa: TDBGrid;
     btnAbrirTab: TButton;
-    FDConnection1: TFDConnection;
     procedure Button1Click(Sender: TObject);
     procedure btnAbrirTabClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    FDConnection1 : TFDConnection;
     procedure ConectarTabela;
   end;
 
@@ -42,7 +42,7 @@ var FDPhysPgDriverLink1 : TFDPhysPgDriverLink;
 
 begin
   FDPhysPgDriverLink1 := TFDPhysPgDriverLink.Create(nil);
-
+  FDConnection1 := TFDConnection.Create(nil);
   try
     FDPhysPgDriverLink1.VendorHome := ExtractFilePath(Application.ExeName) + 'pgbin32\';
     FDPhysPgDriverLink1.VendorLib := 'libpq.dll';

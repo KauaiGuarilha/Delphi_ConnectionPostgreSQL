@@ -44,9 +44,4 @@ object Form1: TForm1
     TabOrder = 2
     OnClick = btnAbrirTabClick
   end
-  object FDConnection1: TFDConnection
-    LoginPrompt = False
-    Left = 40
-    Top = 8
-  end
 end
