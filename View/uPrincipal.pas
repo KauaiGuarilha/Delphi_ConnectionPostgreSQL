@@ -12,17 +12,23 @@ uses
 
 type
   TForm1 = class(TForm)
-    Button1: TButton;
     DBGPessoa: TDBGrid;
-    btnAbrirTab: TButton;
-    procedure Button1Click(Sender: TObject);
-    procedure btnAbrirTabClick(Sender: TObject);
+    edtNumero: TEdit;
+    edtNome: TEdit;
+    btnIncluir: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure btnIncluirClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
-    { Private declarations }
-  public
-    { Public declarations }
     FDConnection1 : TFDConnection;
+    FDQuery1 : TFDQuery;
+    DataSource1 : TDataSource;
+  public
+    procedure ConectarBanco;
     procedure ConectarTabela;
+    procedure InserirCadP;
+
   end;
 
 var
@@ -32,12 +38,32 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.btnAbrirTabClick(Sender: TObject);
+procedure TForm1.FormCreate(Sender: TObject);
 begin
-   ConectarTabela;
+  ConectarBanco;
+  ConectarTabela;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.btnIncluirClick(Sender: TObject);
+begin
+  InserirCadP;
+end;
+
+procedure TForm1.InserirCadP;
+begin
+  FDQuery1.SQL.Text := 'Insert into pessoa ( id , nome ) values ( :id , :nome )';
+  FDQuery1.ParamByName('id').AsInteger := StrToInt(self.edtNumero.Text);
+  FDQuery1.ParamByName('nome').AsString := self.edtNome.Text;
+  try
+    FDQuery1.ExecSQL;
+    FDQuery1.Open('select * from pessoa');
+
+  except on E: Exception do
+    ShowMessage('Ocorreu um problema na Inclusão : ' + E.Message)
+  end;
+end;
+
+procedure TForm1.ConectarBanco;
 var FDPhysPgDriverLink1 : TFDPhysPgDriverLink;
 
 begin
@@ -66,8 +92,6 @@ begin
 end;
 
 procedure TForm1.ConectarTabela;
-var FDQuery1 : TFDQuery;
-    DataSource1 : TDataSource;
 begin
   FDQuery1 := TFDQuery.Create(nil);              // Criando a Query
   DataSource1 := TDataSource.Create(nil);        // Criando o DataSource
@@ -79,5 +103,6 @@ begin
 
   FDQuery1.Open('select * from pessoa');
 end;
+
 
 end.

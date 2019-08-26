@@ -16,17 +16,12 @@ type TConnectionFactory = class (TFDConnection)
     FDPhysPgDriverLink1 : TFDPhysPgDriverLink;
   public
     Constructor Create_TConnectionFactory;
-
-
     procedure ConnectionDB; overload;
-    //function ConnectionDB2 : Boolean; overload;
 end;
 
 implementation
 
 { TConnectionFactory }
-
-
 
 constructor TConnectionFactory.Create_TConnectionFactory;
 begin
