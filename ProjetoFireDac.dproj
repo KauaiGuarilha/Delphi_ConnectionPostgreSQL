@@ -87,6 +87,9 @@
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Connection\ConnectionFactory.pas"/>
+        <DCCReference Include="DAO\PessoaDAO.pas"/>
+        <DCCReference Include="Model\Pessoa.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -8,7 +8,7 @@ uses
   FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, FireDAC.VCLUI.Wait,
   FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
   FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Error;
+  FireDAC.Stan.Error, ConnectionFactory;
 
 type
   TForm1 = class(TForm)
@@ -21,6 +21,7 @@ type
     procedure btnIncluirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
+    FConnectionFactory : TConnectionFactory;
     FDConnection1 : TFDConnection;
     FDQuery1 : TFDQuery;
     DataSource1 : TDataSource;
@@ -70,6 +71,7 @@ begin
   FDPhysPgDriverLink1 := TFDPhysPgDriverLink.Create(nil);
   FDConnection1 := TFDConnection.Create(nil);
   try
+    FDConnection1.LoginPrompt := false;
     FDPhysPgDriverLink1.VendorHome := ExtractFilePath(Application.ExeName) + 'pgbin32\';
     FDPhysPgDriverLink1.VendorLib := 'libpq.dll';
     FDPhysPgDriverLink1.DriverID := 'PG';
@@ -106,3 +108,4 @@ end;
 
 
 end.
+
