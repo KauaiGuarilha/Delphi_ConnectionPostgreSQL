@@ -16,10 +16,12 @@ type TConnectionFactory = class (TFDConnection)
     FDPhysPgDriverLink1 : TFDPhysPgDriverLink;
     FPessoa : TPessoa;
     FPessoaDAO : TPessoaDAO;
+    FDQuery1 : TFDQuery;
   public
     Constructor Create_TConnectionFactory;
     procedure ConnectionDB; overload;
     function Connectar : Boolean;
+    function CriarQuery : TFDQuery;
 end;
 
 implementation
@@ -30,8 +32,15 @@ constructor TConnectionFactory.Create_TConnectionFactory;
 begin
   FDConnection1 := TFDConnection.Create(nil);
   FDPhysPgDriverLink1 := TFDPhysPgDriverLink.Create(nil);
-  FPessoa := TPessoa.Create(FDConnection1);
+  FDQuery1 := TFDQuery.Create(nil);
   FPessoaDAO := TPessoaDAO.Create_TPessoaDAO(FDConnection1);
+end;
+
+function TConnectionFactory.CriarQuery: TFDQuery;
+begin
+  FDQuery1.Connection := FDConnection1;
+
+  result := FDQuery1;
 end;
 
 function TConnectionFactory.Connectar: Boolean;
@@ -53,6 +62,9 @@ begin
     FDPhysPgDriverLink1.DriverID := 'PG';
     FDPhysPgDriverLink1.VendorHome := ExtractFilePath(Application.ExeName) + 'pgbin32\';
     FDPhysPgDriverLink1.VendorLib := 'libpq.dll';
+
+    FDConnection1.LoginPrompt := False;
+    FDConnection1.Connected := True;
 end;
 
 end.

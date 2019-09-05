@@ -56,8 +56,8 @@ object Form1: TForm1
     TabOrder = 2
   end
   object btnIncluir: TButton
-    Left = 208
-    Top = 370
+    Left = 501
+    Top = 368
     Width = 97
     Height = 25
     Caption = 'Incluir'

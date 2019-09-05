@@ -14,7 +14,6 @@ type TPessoaDAO = class (TObject)
     procedure EditarPessoa(pPessoa : TPessoa);
     procedure DeletarPessoa(idPessoa : int64);
     function RetornarPessoa(idPessoa : int64; var pPessoa : TPessoa): Boolean;
-
 end;
 
 implementation

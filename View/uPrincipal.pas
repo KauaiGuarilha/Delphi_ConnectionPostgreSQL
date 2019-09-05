@@ -26,9 +26,8 @@ type
     FDQuery1 : TFDQuery;
     DataSource1 : TDataSource;
   public
-    procedure ConectarBanco;
     procedure ConectarTabela;
-    procedure InserirCadP;
+   // procedure InserirCadP;
 
   end;
 
@@ -41,69 +40,24 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ConectarBanco;
+  FConnectionFactory := TConnectionFactory.Create_TConnectionFactory;
+  FConnectionFactory.ConnectionDB;
   ConectarTabela;
 end;
 
 procedure TForm1.btnIncluirClick(Sender: TObject);
 begin
-  InserirCadP;
-end;
-
-procedure TForm1.InserirCadP;
-begin
-  FDQuery1.SQL.Text := 'Insert into pessoa ( id , nome ) values ( :id , :nome )';
-  FDQuery1.ParamByName('id').AsInteger := StrToInt(self.edtNumero.Text);
-  FDQuery1.ParamByName('nome').AsString := self.edtNome.Text;
-  try
-    FDQuery1.ExecSQL;
-    FDQuery1.Open('select * from pessoa');
-
-  except on E: Exception do
-    ShowMessage('Ocorreu um problema na Inclusão : ' + E.Message)
-  end;
-end;
-
-procedure TForm1.ConectarBanco;
-var FDPhysPgDriverLink1 : TFDPhysPgDriverLink;
-
-begin
-  FDPhysPgDriverLink1 := TFDPhysPgDriverLink.Create(nil);
-  FDConnection1 := TFDConnection.Create(nil);
-  try
-    FDConnection1.LoginPrompt := false;
-    FDPhysPgDriverLink1.VendorHome := ExtractFilePath(Application.ExeName) + 'pgbin32\';
-    FDPhysPgDriverLink1.VendorLib := 'libpq.dll';
-    FDPhysPgDriverLink1.DriverID := 'PG';
-
-    FDPhysPgDriverLink1.Release;
-
-    FDConnection1.Connected := false;
-
-    FDConnection1.DriverName := 'PG';
-    FDConnection1.Params.Values['Database']  := 'postgres';
-    FDConnection1.Params.Values['User_Name'] := 'postgres';
-    FDConnection1.Params.Values['password']  := '#abc123#';
-    FDConnection1.Params.Values['Server']    := 'localhost';
-    FDConnection1.Params.Values['Port']      := '5432';
-
-    FDConnection1.Connected := true;
-    finally
-      FDPhysPgDriverLink1.Free;
-    end;
+  //InserirCadP;
 end;
 
 procedure TForm1.ConectarTabela;
 begin
-  FDQuery1 := TFDQuery.Create(nil);              // Criando a Query
-  DataSource1 := TDataSource.Create(nil);        // Criando o DataSource
+  DataSource1 := TDataSource.Create(nil);
 
+  DataSource1.DataSet := FConnectionFactory.CriarQuery;
+  DBGPessoa.DataSource := DataSource1;
 
-  FDQuery1.Connection := FDConnection1;
-  DataSource1.DataSet := FDQuery1;               // Ligando o DataSource no FDQuery
-  DBGPessoa.DataSource := DataSource1;           // Ligando a tabela no DataSource
-
-  FDQuery1.Open('select * from pessoa');
+  FConnectionFactory.CriarQuery.Open('select * from pessoa');
 end;
 
 
