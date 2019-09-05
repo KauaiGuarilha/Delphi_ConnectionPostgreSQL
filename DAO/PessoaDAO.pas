@@ -56,7 +56,6 @@ begin
   finally
     lQuery.Free;
   end;
-
 end;
 
 procedure TPessoaDAO.DeletarPessoa(idPessoa: int64);
@@ -93,7 +92,6 @@ begin
   finally
     lQuery.Free;
   end;
-
 end;
 
 end.
