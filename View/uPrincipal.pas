@@ -8,7 +8,7 @@ uses
   FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, FireDAC.VCLUI.Wait,
   FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
   FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Error, ConnectionFactory;
+  FireDAC.Stan.Error, ConnectionFactory, Pessoa, PessoaDAO;
 
 type
   TForm1 = class(TForm)
@@ -18,8 +18,8 @@ type
     btnIncluir: TButton;
     Label1: TLabel;
     Label2: TLabel;
-    procedure btnIncluirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnIncluirClick(Sender: TObject);
   private
     FConnectionFactory : TConnectionFactory;
     FDConnection1 : TFDConnection;
@@ -46,8 +46,23 @@ begin
 end;
 
 procedure TForm1.btnIncluirClick(Sender: TObject);
+var  FPessoa : TPessoa;
+     FPessoaDAO : TPessoaDAO;
 begin
-  //InserirCadP;
+  FConnectionFactory := TConnectionFactory.Create_TConnectionFactory;
+  FPessoa := TPessoa.Create;
+  FPessoaDAO := TPessoaDAO.Create_TPessoaDAO(FConnectionFactory);
+  try
+    FPessoa.FId := StrToInt(self.edtNumero.Text);
+    FPessoa.FNome := self.edtNome.Text;
+
+    FPessoaDAO.GravarPessoa(FPessoa);
+  finally
+    FPessoa.Free;
+    FPessoaDAO.Free;
+  end;
+ ConectarTabela;
+
 end;
 
 procedure TForm1.ConectarTabela;
